@@ -8,6 +8,6 @@
           displayName: lambda_script
           inputs:
             scriptSource: 'filePath'
-            scriptPath: $(System.DefaultWorkingDirectory)/ec2/ebs-volume-swap-with-snapshot.py
+            scriptPath: $(System.DefaultWorkingDirectory)/ec2/EBSVolumeSwapWithSnap.pyshot
             arguments:  ${{ parameters.region }} ${{ parameters.instance_id }} "${{ parameters.volume_ids }}"
 
