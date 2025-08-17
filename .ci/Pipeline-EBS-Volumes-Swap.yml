@@ -1,0 +1,13 @@
+        - script: |
+            python --version
+            echo "Region: ${{ parameters.region }}"
+            echo "Instance ID: ${{ parameters.instance_id }}"
+            echo "Volume IDs: ${{ parameters.volume_ids }}"
+          displayName: 'volume swap py script'
+        - task: PythonScript@0
+          displayName: lambda_script
+          inputs:
+            scriptSource: 'filePath'
+            scriptPath: $(System.DefaultWorkingDirectory)/ec2/ebs-volume-swap-with-snapshot.py
+            arguments:  ${{ parameters.region }} ${{ parameters.instance_id }} "${{ parameters.volume_ids }}"
+
