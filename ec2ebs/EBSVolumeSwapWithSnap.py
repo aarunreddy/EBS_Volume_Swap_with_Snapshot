@@ -283,5 +283,33 @@ def main():
 
     print("[INFO] All volume operations completed.")
 
+# Step 10: Main drivers
+def main():
+    print("Inside script")
+    print(REGION)
+    print(INSTANCE_ID)
+    print(volume_ids_csv)
+    if volume_ids_csv and volume_ids_csv != "AllVolumes" and volume_ids_csv.strip():
+        all_volumes = get_filtered_attached_volumes(INSTANCE_ID, volume_ids_csv)
+        print("filtered volume ids")
+    else:
+        all_volumes = get_attached_volumes(INSTANCE_ID)
+        print("All volumes")
+    
+    print(all_volumes)
+
+    if not all_volumes:
+        print("[WARN] No eligible volumes found.")
+        return
+
+    print("[INFO] The following volumes will be processed:")
+    for v in all_volumes:
+        print(f"  - {v['volume_id']} ({v['device_name']})")
+
+    with ThreadPoolExecutor(max_workers=len(all_volumes)) as executor:
+        executor.map(snapshot_and_swap, all_volumes)
+
+    print("[INFO] All volume operations completed.")
+
 if __name__ == "__main__":
     main()
